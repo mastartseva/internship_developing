@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Warehouse Management</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <h1>Warehouse Management</h1>
+    <form id="addRollForm">
+        <label for="length">Length:</label>
+        <input type="number" id="length" name="length" required><br>
+        <label for="weight">Weight:</label>
+        <input type="number" id="weight" name="weight" required><br>
+        <button type="submit">Add Roll</button>
+    </form>
+    <script>
+        document.getElementById('addRollForm').onsubmit = async function(event) {
+            event.preventDefault();
+            const length = document.getElementById('length').value;
+            const weight = document.getElementById('weight').value;
+
+            const response = await fetch('/rolls/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ length, weight }),
+            });
+
+            const result = await response.json();
+            console.log(result);
+        };
+    </script>
+<title>Warehouse Management</title>
+<link rel="stylesheet" type="text/css" href="static/styles.css">
+</head>
+<body>
+    <h1>Warehouse Management</h1>
+    <form id="addRollForm">
+        <label for="length">Length:</label>
+        <input type="number" id="length" name="length" required><br>
+        <label for="weight">Weight:</label>
+        <input type="number" id="weight" name="weight" required><br>
+        <button type="submit">Add Roll</button>
+    </form>
+    <button id="getRollsButton">Get Rolls</button>
+    <ul id="rollsList"></ul>
+    <script>
+        document.getElementById('addRollForm').onsubmit = async function(event) {
+            event.preventDefault();
+            const length = document.getElementById('length').value;
+            const weight = document.getElementById('weight').value;
+
+            const response = await fetch('/rolls/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ length, weight }),
+            });
+
+            const result = await response.json();
+            console.log(result);
+        };
+
+        document.getElementById('getRollsButton').onclick = async function() {
+            const response = await fetch('/rolls/');
+            const rolls = await response.json();
+
+            const rollsList = document.getElementById('rollsList');
+            rollsList.innerHTML = '';
+            rolls.forEach(roll => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `ID: ${roll.id}, Length: ${roll.length}, Weight: ${roll.weight}, Date Added: ${roll.date_added}`;
+                rollsList.appendChild(listItem);
+            });
+        };
+    </script>
+</body>
+</html>
+
+
